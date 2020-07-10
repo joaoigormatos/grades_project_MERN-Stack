@@ -19,9 +19,8 @@ const GradeList = () => {
 
   const retrieveGrade = () => {
     GradeDataService.getAll()
-      .then((response) => {
-        setGrade(response.data);
-        console.log(response.data);
+      .then(({ data }) => {
+        setGrade(data.grades);
       })
       .catch((e) => {
         console.log(e);
@@ -51,10 +50,12 @@ const GradeList = () => {
   };
 
   const findByName = () => {
+    console.log(searchName)
     GradeDataService.findByName(searchName)
-      .then((response) => {
-        setGrade(response.data);
-        console.log(response.data);
+      .then(({ data }) => {
+        console.log(data.grades)
+        setGrade(data.grades);
+
       })
       .catch((e) => {
         console.log(e);
@@ -87,7 +88,7 @@ const GradeList = () => {
         <h4>Grade List</h4>
 
         <ul className="list-group">
-          {grade &&
+          {grade.length > 0 &&
             grade.map((grade, index) => (
               <li
                 className={
@@ -142,11 +143,11 @@ const GradeList = () => {
             </Link>
           </div>
         ) : (
-          <div>
-            <br />
-            <p>Please click on a Grade...</p>
-          </div>
-        )}
+            <div>
+              <br />
+              <p>Please click on a Grade...</p>
+            </div>
+          )}
       </div>
     </div>
   );

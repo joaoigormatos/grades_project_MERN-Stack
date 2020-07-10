@@ -9,14 +9,14 @@ const Grade = (props) => {
     type: '',
     value: '',
   };
+  console.log(props)
   const [currentGrade, setCurrentGrade] = useState(initialGradeState);
   const [message, setMessage] = useState('');
 
   const getGrade = (id) => {
     GradeDataService.get(id)
-      .then((response) => {
-        setCurrentGrade(response.data);
-        console.log(response.data);
+      .then(({ data }) => {
+        setCurrentGrade({ ...data.grade, id });
       })
       .catch((e) => {
         console.log(e);
@@ -33,6 +33,7 @@ const Grade = (props) => {
   };
 
   const updateGrade = () => {
+    console.log("clicked")
     GradeDataService.update(currentGrade.id, currentGrade)
       .then((response) => {
         setMessage('The grade was updated successfully!');
@@ -118,11 +119,11 @@ const Grade = (props) => {
           <p>{message}</p>
         </div>
       ) : (
-        <div>
-          <br />
-          <p>Please click on a Grade...</p>
-        </div>
-      )}
+          <div>
+            <br />
+            <p>Please click on a Grade...</p>
+          </div>
+        )}
     </div>
   );
 };

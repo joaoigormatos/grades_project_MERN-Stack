@@ -9,7 +9,7 @@ const create = async (req, res) => {
     if (!newGrade) return res.status(404).json({ status: 404, message: 'It was not possible to create the new grade please checkout the parameters' })
     logger.info(`POST /grade - ${JSON.stringify()}`);
 
-    return res.json({ message: 'Grade created sucessfully', data: newGrade })
+    return res.json({ message: 'Grade created sucessfully', grade: newGrade })
   } catch (error) {
     res
       .status(500)
@@ -28,14 +28,28 @@ const findAll = async (req, res) => {
   try {
     let grades = null
     if (!condition) {
-      grades = await Grades.find({}, { _id: 0, __v: 0 })
-      return res.json({ message: "grades found sucessfully ", data: grades })
+      grades = await Grades.find({})
+
     }
-    const { regex, options } = condition.name
-    grades = await Grades.find({ name: { $regex: regex, $options: options } })
+    else {
+
+      const { regex, options } = condition.name
+      grades = await Grades.find({ name: { $regex: regex, $options: options } }, { __v: 0 })
+    }
+    const updatedGrades = grades.map(grade => {
+      const id = grade.id
+      const { name, subject, type, value } = grade
+      return {
+        id,
+        name,
+        subject,
+        type,
+        value
+      }
+    })
 
     logger.info(`GET /grade`);
-    return res.json({ message: `those are the grades found with the name ${name}`, grades })
+    return res.json({ message: `those are the grades found with the name ${name}`, grades: updatedGrades })
   } catch (error) {
     res
       .status(500)
@@ -50,8 +64,9 @@ const findOne = async (req, res) => {
   try {
     const grade = await Grades.findOne({ _id: id }, { _id: 0, __v: 0 })
     if (!grade) return res.status(404).json({ status: 404, message: `id ${id} not found` })
-    return res.json({ message: 'Grade find sucessfully', data: grade })
     logger.info(`GET /grade - ${id}`);
+
+    return res.json({ message: 'Grade find sucessfully', grade })
   } catch (error) {
     res.status(500).send({ message: 'Erro ao buscar o Grade id: ' + id });
     logger.error(`GET /grade - ${JSON.stringify(error.message)}`);

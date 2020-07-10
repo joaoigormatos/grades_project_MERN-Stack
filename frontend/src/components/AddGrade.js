@@ -26,16 +26,15 @@ const AddGrade = () => {
     };
 
     GradeDataService.create(data)
-      .then((response) => {
+      .then(({ data }) => {
         setGrade({
-          id: response.data.id,
-          name: response.data.name,
-          subject: response.data.img,
-          type: response.data.type,
-          value: response.data.value,
+          id: data.grade.id,
+          name: data.grade.name,
+          subject: data.grade.img,
+          type: data.grade.type,
+          value: data.grade.value,
         });
         setSubmitted(true);
-        console.log(response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -57,61 +56,61 @@ const AddGrade = () => {
           </button>
         </div>
       ) : (
-        <div>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              required
-              value={grade.name}
-              onChange={handleInputChange}
-              name="name"
-            />
-          </div>
+          <div>
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                required
+                value={grade.name}
+                onChange={handleInputChange}
+                name="name"
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="subject">Subject</label>
-            <input
-              type="text"
-              className="form-control"
-              id="subject"
-              required
-              value={grade.subject}
-              onChange={handleInputChange}
-              name="subject"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="type">Type</label>
-            <input
-              type="text"
-              className="form-control"
-              id="type"
-              required
-              value={grade.type}
-              onChange={handleInputChange}
-              name="type"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="value">Value</label>
-            <input
-              type="Number"
-              className="form-control"
-              id="value"
-              required
-              value={grade.value}
-              onChange={handleInputChange}
-              name="value"
-            />
-          </div>
-          <button onClick={saveGrade} className="btn btn-success">
-            Submit
+            <div className="form-group">
+              <label htmlFor="subject">Subject</label>
+              <input
+                type="text"
+                className="form-control"
+                id="subject"
+                required
+                value={grade.subject}
+                onChange={handleInputChange}
+                name="subject"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="type">Type</label>
+              <input
+                type="text"
+                className="form-control"
+                id="type"
+                required
+                value={grade.type}
+                onChange={handleInputChange}
+                name="type"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="value">Value</label>
+              <input
+                type="Number"
+                className="form-control"
+                id="value"
+                required
+                value={grade.value}
+                onChange={handleInputChange}
+                name="value"
+              />
+            </div>
+            <button onClick={saveGrade} className="btn btn-success">
+              Submit
           </button>
-        </div>
-      )}
+          </div>
+        )}
     </div>
   );
 };
